@@ -58,7 +58,8 @@ public class CameraRoomPictureEvent extends MessageHandler
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (IllegalArgumentException e) {
-                System.out.println("YOU ARE NOT USING A PATCHED HABBO.SWF. Run HabKit to patch the camera to use PNG encoding.");
+                System.out.println("[Apollyon] You are using a Habbo.swf that has not been patched to work with Apollyon. Please read the read me on a guide to patching your swf, or download a prepatched one on our git at:");
+                System.out.println("[Apollyon] https://git.krews.org/morningstar/apollyon");
             }
 
             this.client.sendResponse(new CameraURLComposer(URL));

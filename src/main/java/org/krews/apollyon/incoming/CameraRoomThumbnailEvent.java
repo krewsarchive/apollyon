@@ -56,6 +56,9 @@ public class CameraRoomThumbnailEvent extends MessageHandler
             ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.thumbnail") + room.getId() + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            System.out.println("[Apollyon] You are using a Habbo.swf that has not been patched to work with Apollyon. Please read the read me on a guide to patching your swf, or download a prepatched one on our git at:");
+            System.out.println("[Apollyon] https://git.krews.org/morningstar/apollyon");
         }
 
         this.client.sendResponse(new CameraRoomThumbnailSavedComposer());
