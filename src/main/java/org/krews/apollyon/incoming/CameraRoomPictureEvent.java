@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.IllegalArgumentException;
 
 public class CameraRoomPictureEvent extends MessageHandler
 {
@@ -49,23 +50,17 @@ public class CameraRoomPictureEvent extends MessageHandler
             this.client.getHabbo().getHabboInfo().setPhotoTimestamp(timestamp);
             this.client.getHabbo().getHabboInfo().setPhotoRoomId(room.getId());
             this.client.getHabbo().getHabboInfo().setPhotoJSON(json);
-            BufferedImage theImage = null;
-            try {
-                theImage = ImageIO.read(new ByteBufInputStream(image));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
             try {
+                BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
                 ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
                 ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL_small));
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                System.out.println("YOU ARE NOT USING A PATCHED HABBO.SWF. Run HabKit to patch the camera to use PNG encoding.");
             }
+
             this.client.sendResponse(new CameraURLComposer(URL));
         }
     }
