@@ -1,0 +1,5 @@
+org\krews\apollyon\Main.class
+org\krews\apollyon\incoming\CameraPurchaseEvent.class
+org\krews\apollyon\incoming\CameraPublishToWebEvent.class
+org\krews\apollyon\incoming\CameraRoomThumbnailEvent.class
+org\krews\apollyon\incoming\CameraRoomPictureEvent.class
