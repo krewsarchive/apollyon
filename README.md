@@ -1,4 +1,4 @@
-# Apollyon#
+# Apollyon #
 
 ## What is Apollyon? ##
 Apollyon is the official Camera Project for Arcturus Morningstar, it is backwards compatible with Arcturus Emulator by TheGeneral, if you wish to use it with the official arcturus software.
