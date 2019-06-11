@@ -14,6 +14,7 @@ Arcturus Morningstar is released under the [DO WHAT THE F*CK YOU WANT TO PUBLIC 
 ![image](https://img.shields.io/badge/STATUS-PREVIEW-blue.svg?style=for-the-badge&logo=appveyor)
 
 Compiled Download: [Preview 1](https://git.krews.org/morningstar/Apollyon/releases)
+
 Pre-Patched SWF Download: [Download Link](https://git.krews.org/morningstar/apollyon/uploads/dc669a26613bf2356e48eb653734ab29/patched-habbo.swf)
 
 ## FAQ ##
