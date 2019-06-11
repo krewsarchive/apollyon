@@ -48,10 +48,10 @@ public class Main extends HabboPlugin implements EventListener {
         incoming.remove(Incoming.CameraPublishToWebEvent);
         incoming.remove(Incoming.CameraPurchaseEvent);
         incoming.remove(Incoming.CameraRoomThumbnailEvent);
-        Emulator.getGameServer().getPacketManager().registerHandler(Incoming.CameraRoomPictureEvent, CameraRoomPictureEvent.class);
-        Emulator.getGameServer().getPacketManager().registerHandler(Incoming.CameraPublishToWebEvent, CameraPublishToWebEvent.class);
-        Emulator.getGameServer().getPacketManager().registerHandler(Incoming.CameraPurchaseEvent, CameraPurchaseEvent.class);
-        Emulator.getGameServer().getPacketManager().registerHandler(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
+        packetManager.registerHandler(Incoming.CameraRoomPictureEvent, CameraRoomPictureEvent.class);
+        packetManager.registerHandler(Incoming.CameraPublishToWebEvent, CameraPublishToWebEvent.class);
+        packetManager.registerHandler(Incoming.CameraPurchaseEvent, CameraPurchaseEvent.class);
+        packetManager.registerHandler(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
 }
 
 
@@ -75,10 +75,10 @@ public class Main extends HabboPlugin implements EventListener {
         incoming.remove(Incoming.CameraRoomThumbnailEvent);
 
         // Adds the PNGCamera Packet Handlers
-        Emulator.getGameServer().getPacketManager().registerHandler(Incoming.CameraRoomPictureEvent, CameraRoomPictureEvent.class);
-        Emulator.getGameServer().getPacketManager().registerHandler(Incoming.CameraPublishToWebEvent, CameraPublishToWebEvent.class);
-        Emulator.getGameServer().getPacketManager().registerHandler(Incoming.CameraPurchaseEvent, CameraPurchaseEvent.class);
-        Emulator.getGameServer().getPacketManager().registerHandler(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
+        packetManager.registerHandler(Incoming.CameraRoomPictureEvent, CameraRoomPictureEvent.class);
+        packetManager.registerHandler(Incoming.CameraPublishToWebEvent, CameraPublishToWebEvent.class);
+        packetManager.registerHandler(Incoming.CameraPurchaseEvent, CameraPurchaseEvent.class);
+        packetManager.registerHandler(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
 
         // Send the message to the Emulator that PNGCamera has started.
         Emulator.getLogging().logStart("[Apollyon] Apollyon Preview 1 has hijacked the Arcturus Camera packets, and is ready to use!!");
