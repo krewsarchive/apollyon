@@ -7,7 +7,7 @@ Apollyon is the official Camera Project for Arcturus Morningstar, it is also com
 Apollyon uses a PNG Image, instead of JSON data to create the image, meaning all customs and new furniture and clothing show up without needing TheGeneral to update his camera server.
 
 ## License ##
-Arcturus Morningstar is released under the [DO WHAT THE F*CK YOU WANT TO PUBLIC LICENCE](https://git.krews.org/morningstar/apollyon/blob/master/LICENSE).
+Apollyon is released under the [DO WHAT THE F*CK YOU WANT TO PUBLIC LICENCE](https://git.krews.org/morningstar/apollyon/blob/master/LICENSE).
 
 ## Versions ##
 ![image](https://img.shields.io/badge/VERSION-1-success.svg?style=for-the-badge&logo=appveyor)
