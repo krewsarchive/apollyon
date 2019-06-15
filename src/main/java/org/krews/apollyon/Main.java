@@ -44,15 +44,13 @@ public class Main extends HabboPlugin implements EventListener {
         Field f = PacketManager.class.getDeclaredField("incoming");
         f.setAccessible(true);
         THashMap<Integer, Class<? extends MessageHandler>> incoming = (THashMap<Integer, Class<? extends MessageHandler>>)f.get(packetManager);
-        incoming.remove(Incoming.CameraRoomThumbnailEvent);
-        incoming.remove(Incoming.CameraPublishToWebEvent);
-        incoming.remove(Incoming.CameraPurchaseEvent);
-        incoming.remove(Incoming.CameraRoomThumbnailEvent);
-        packetManager.registerHandler(Incoming.CameraRoomPictureEvent, CameraRoomPictureEvent.class);
-        packetManager.registerHandler(Incoming.CameraPublishToWebEvent, CameraPublishToWebEvent.class);
-        packetManager.registerHandler(Incoming.CameraPurchaseEvent, CameraPurchaseEvent.class);
-        packetManager.registerHandler(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
-}
+        incoming.remove(Incoming.CameraRoomPictureEvent, CameraRoomPictureEvent.class);
+        incoming.remove(Incoming.CameraPublishToWebEvent, CameraPublishToWebEvent.class);
+        incoming.remove(Incoming.CameraPurchaseEvent, CameraPurchaseEvent.class);
+        incoming.remove(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
+        Emulator.getLogging().logStart("[Apollyon] Bye Bye.");
+
+    }
 
 
     @EventHandler
