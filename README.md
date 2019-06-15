@@ -7,7 +7,7 @@ Apollyon is the official Camera Project for Arcturus Morningstar, it is also com
 Apollyon uses a PNG Image, instead of JSON data to create the image, meaning all customs and new furniture and clothing show up without needing TheGeneral to update his camera server.
 
 ## License ##
-Arcturus Morningstar is released under the [DO WHAT THE F*CK YOU WANT TO PUBLIC LICENCE](https://git.krews.org/morningstar/apollyon/blob/master/LICENSE).
+Apollyon is released under the [DO WHAT THE F*CK YOU WANT TO PUBLIC LICENCE](https://git.krews.org/morningstar/apollyon/blob/master/LICENSE).
 
 ## Versions ##
 ![image](https://img.shields.io/badge/VERSION-1-success.svg?style=for-the-badge&logo=appveyor)
@@ -22,7 +22,7 @@ Q: I get this error when I take a picture '**You are using a Habbo.swf that has 
 
 A: You need to patch your camera using HabKit.
 
-Download the software here: [HabKit](https://git.krews.org/morningstar/apollyon/master/%5Bhabkit.zip%5D(/uploads/a19154a56be31a6ed41f9b768ac8e65c/habkit.zip))
+Download the software here: [habkit.zip](https://git.krews.org/morningstar/apollyon/uploads/a19154a56be31a6ed41f9b768ac8e65c/habkit.zip)
 
 Unzip the folder, and open the net47 folder. Then add your Habbo.swf to the net47 folder. Use Command prompt and cd to the folder. type the following into cmd:
 
