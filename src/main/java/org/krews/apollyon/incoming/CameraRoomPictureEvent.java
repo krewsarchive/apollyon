@@ -8,8 +8,11 @@ import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import org.krews.apollyon.ftp.FTPUploadService;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.lang.IllegalArgumentException;
@@ -53,8 +56,15 @@ public class CameraRoomPictureEvent extends MessageHandler
 
             try {
                 BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
-                ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
-                ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL_small));
+                if(Emulator.getConfig().getInt("ftp.enabled") == 1) {
+                    byte[] imageBytes = ((DataBufferByte) theImage.getData().getDataBuffer()).getData();
+                    FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL);
+                    FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL_small);
+                }
+                else {
+                    ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
+                    ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL_small));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (IllegalArgumentException e) {

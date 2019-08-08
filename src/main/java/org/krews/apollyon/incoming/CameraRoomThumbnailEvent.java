@@ -7,8 +7,11 @@ import com.eu.habbo.messages.outgoing.camera.CameraRoomThumbnailSavedComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import org.krews.apollyon.ftp.FTPUploadService;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 
@@ -53,7 +56,13 @@ public class CameraRoomThumbnailEvent extends MessageHandler
         }
 
         try {
-            ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.thumbnail") + room.getId() + ".png"));
+            if(Emulator.getConfig().getInt("ftp.enabled") == 1) {
+                byte[] imageBytes = ((DataBufferByte) theImage.getData().getDataBuffer()).getData();
+                FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.thumbnail") + room.getId() + ".png");
+            }
+            else {
+                ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.thumbnail") + room.getId() + ".png"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
