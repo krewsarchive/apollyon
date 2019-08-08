@@ -55,13 +55,14 @@ public class CameraRoomPictureEvent extends MessageHandler
             this.client.getHabbo().getHabboInfo().setPhotoJSON(json);
 
             try {
-                BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
                 if(Emulator.getConfig().getInt("ftp.enabled") == 1) {
-                    byte[] imageBytes = ((DataBufferByte) theImage.getData().getDataBuffer()).getData();
+                    byte[] imageBytes = new byte[image.readableBytes()];
+                    image.readBytes(imageBytes);
                     FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL);
                     FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL_small);
                 }
                 else {
+                    BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
                     ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
                     ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL_small));
                 }
