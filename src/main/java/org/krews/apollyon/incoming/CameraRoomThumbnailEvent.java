@@ -48,13 +48,6 @@ public class CameraRoomThumbnailEvent extends MessageHandler
         this.packet.readInt();
         this.packet.readInt();
 
-        BufferedImage theImage = null;
-        try {
-            theImage = ImageIO.read(new ByteBufInputStream(image));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         try {
             if(Emulator.getConfig().getInt("ftp.enabled") == 1) {
                 byte[] imageBytes = new byte[image.readableBytes()];
@@ -62,7 +55,9 @@ public class CameraRoomThumbnailEvent extends MessageHandler
                 FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.thumbnail") + room.getId() + ".png");
             }
             else {
-                ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.thumbnail") + room.getId() + ".png"));
+               BufferedImage theImage = null;
+               theImage = ImageIO.read(new ByteBufInputStream(image));
+               ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.thumbnail") + room.getId() + ".png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
