@@ -57,6 +57,10 @@ public class Main extends HabboPlugin implements EventListener {
     public void onEmulatorLoadedEvent(EmulatorLoadedEvent e) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, Exception {
 
         // Adds missing sqls if they are not found.
+        Emulator.getConfig().register("ftp.enabled", "0");
+        Emulator.getConfig().register("ftp.user", "root");
+        Emulator.getConfig().register("ftp.password", "password123");
+        Emulator.getConfig().register("ftp.host", "example.com");
         Emulator.getConfig().register("camera.url", "http://yourdomain.com/swfdirectory/camera/");
         Emulator.getConfig().register("imager.location.output.camera", "C:\\yourdirectory\\swfdirectory\\camera\\");
         Emulator.getConfig().register("imager.location.output.thumbnail", "C:\\yourdirectory\\swfdirectory\\camera\\thumbnails\\thumbnail_");
