@@ -8,6 +8,7 @@ import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import javafx.scene.Camera;
 import org.krews.apollyon.ftp.FTPUploadService;
 
 import javax.imageio.ImageIO;
@@ -21,9 +22,7 @@ public class CameraRoomPictureEvent extends MessageHandler
 {
     @Override
     public void handle() {
-        if (Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboStats().lastPurchaseTimestamp >= CatalogManager.PURCHASE_COOLDOWN) {
-            this.client.getHabbo().getHabboStats().lastPurchaseTimestamp = Emulator.getIntUnixTimestamp();
-            if (!this.client.getHabbo().hasPermission("acc_camera")) {
+        if (!this.client.getHabbo().hasPermission("acc_camera")) {
                 this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.permission")));
                 return;
             }
@@ -53,6 +52,8 @@ public class CameraRoomPictureEvent extends MessageHandler
             this.client.getHabbo().getHabboInfo().setPhotoTimestamp(timestamp);
             this.client.getHabbo().getHabboInfo().setPhotoRoomId(room.getId());
             this.client.getHabbo().getHabboInfo().setPhotoJSON(json);
+            CameraPurchaseEvent lol = new CameraPurchaseEvent();
+            lol.lastRanTimestamps.put(this.client.getHabbo(), Emulator.getIntUnixTimestamp());
 
             try {
                 if(Emulator.getConfig().getInt("ftp.enabled") == 1) {
@@ -76,4 +77,3 @@ public class CameraRoomPictureEvent extends MessageHandler
             this.client.sendResponse(new CameraURLComposer(URL));
         }
     }
-}

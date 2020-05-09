@@ -13,7 +13,11 @@ import org.krews.apollyon.incoming.CameraPublishToWebEvent;
 import org.krews.apollyon.incoming.CameraPurchaseEvent;
 import org.krews.apollyon.incoming.CameraRoomPictureEvent;
 import org.krews.apollyon.incoming.CameraRoomThumbnailEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
+
 
 /**
  * Apollyon
@@ -22,7 +26,7 @@ import java.lang.reflect.Field;
  */
 
 public class Main extends HabboPlugin implements EventListener {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(Emulator.class);
     @Override
     public void onEnable() throws Exception {
         Emulator.getPluginManager().registerEvents(this, this);
@@ -48,15 +52,14 @@ public class Main extends HabboPlugin implements EventListener {
         incoming.remove(Incoming.CameraPublishToWebEvent, CameraPublishToWebEvent.class);
         incoming.remove(Incoming.CameraPurchaseEvent, CameraPurchaseEvent.class);
         incoming.remove(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
-        Emulator.getLogging().logStart("[Apollyon] Bye Bye.");
 
     }
-
 
     @EventHandler
     public void onEmulatorLoadedEvent(EmulatorLoadedEvent e) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, Exception {
 
         // Adds missing sqls if they are not found.
+        Emulator.getConfig().register("apollyon.cooldown.amount", "250");
         Emulator.getConfig().register("ftp.enabled", "0");
         Emulator.getConfig().register("ftp.user", "root");
         Emulator.getConfig().register("ftp.password", "password123");
@@ -83,8 +86,7 @@ public class Main extends HabboPlugin implements EventListener {
         packetManager.registerHandler(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
 
         // Send the message to the Emulator that PNGCamera has started.
-        Emulator.getLogging().logStart("[Apollyon] Apollyon Preview 1 has hijacked the Arcturus Camera packets, and is ready to use!!");
-        Emulator.getLogging().logStart("[Apollyon] Please ensure this plugin was downloaded from Krews.org and is the latest version.");
+        LOGGER.info("Official Plugin - Rawr. Apollyon Preview 2 has officially loaded!");
 
     }
 

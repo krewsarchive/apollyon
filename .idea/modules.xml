@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/src/main/resources/Apollyon.iml" filepath="$PROJECT_DIR$/src/main/resources/Apollyon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Apollyon.iml" filepath="$PROJECT_DIR$/Apollyon.iml" />
       <module fileurl="file://$PROJECT_DIR$/arcturusplugin.iml" filepath="$PROJECT_DIR$/arcturusplugin.iml" />
     </modules>
   </component>

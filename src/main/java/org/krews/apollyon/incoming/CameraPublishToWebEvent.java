@@ -43,11 +43,10 @@ public class CameraPublishToWebEvent  extends MessageHandler
                                 this.client.getHabbo().getHabboInfo().setWebPublishTimestamp(timestamp);
                                 this.client.getHabbo().givePixels(-Emulator.getConfig().getInt("camera.price.points.publish"));
                                 published = true;
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
                             }
-                            catch (SQLException e)
-                            {
-                                Emulator.getLogging().logSQLException(e);
-                            }
+
                         }
                         else {
                             return;
