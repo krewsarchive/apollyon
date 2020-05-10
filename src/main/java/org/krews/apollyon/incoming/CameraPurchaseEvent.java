@@ -2,6 +2,7 @@ package org.krews.apollyon.incoming;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -11,8 +12,11 @@ import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.plugin.events.users.UserPurchasePictureEvent;
 import gnu.trove.map.hash.THashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CameraPurchaseEvent extends MessageHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CameraPurchaseEvent.class);
     public static int CAMERA_PURCHASE_CREDITS = 5;
     public static int CAMERA_PURCHASE_POINTS = 5;
     public static int CAMERA_PURCHASE_POINTS_TYPE = 0;
@@ -43,9 +47,23 @@ public class CameraPurchaseEvent extends MessageHandler {
             return;
         }
 
+        int itemBaseId = Emulator.getConfig().getInt("camera.item_id");
+        Item item = Emulator.getGameEnvironment().getItemManager().getItem(itemBaseId);
 
+        // Check if the photo item does exist.
+        if (item == null) {
+            LOGGER.error("Failed to find photo item {} in database, unable to save photo.", itemBaseId);
+            return;
+        }
 
-        HabboItem photoItem = Emulator.getGameEnvironment().getItemManager().createItem(this.client.getHabbo().getHabboInfo().getId(), Emulator.getGameEnvironment().getItemManager().getItem(Emulator.getConfig().getInt("camera.item_id")), 0, 0, this.client.getHabbo().getHabboInfo().getPhotoJSON());
+        // Check if the interaction type is corrct.
+        String itemInteractionType = item.getInteractionType().getName();
+        if (!itemInteractionType.equals("external_image")) {
+            LOGGER.error("Photo item {} in has the wrong interaction type ({}), it needs to be external_image.", itemBaseId, itemInteractionType);
+            return;
+        }
+
+        HabboItem photoItem = Emulator.getGameEnvironment().getItemManager().createItem(this.client.getHabbo().getHabboInfo().getId(), item, 0, 0, this.client.getHabbo().getHabboInfo().getPhotoJSON());
 
         if (photoItem != null) {
             photoItem.setExtradata(photoItem.getExtradata().replace("%id%", photoItem.getId() + ""));
