@@ -10,6 +10,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import javafx.scene.Camera;
 import org.krews.apollyon.ftp.FTPUploadService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,8 +20,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.IllegalArgumentException;
 
-public class CameraRoomPictureEvent extends MessageHandler
-{
+public class CameraRoomPictureEvent extends MessageHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CameraRoomPictureEvent.class);
+
     @Override
     public void handle() {
         if (!this.client.getHabbo().hasPermission("acc_camera")) {
@@ -38,42 +41,47 @@ public class CameraRoomPictureEvent extends MessageHandler
 
             if (image == null)
                 return;
-            this.packet.readString();
-            this.packet.readString();
-            this.packet.readInt();
-            this.packet.readInt();
-            int timestamp = Emulator.getIntUnixTimestamp();
-
-            String URL = this.client.getHabbo().getHabboInfo().getId() + "_" + timestamp + ".png";
-            String URL_small = this.client.getHabbo().getHabboInfo().getId() + "_" + timestamp + "_small.png";
-            String base = Emulator.getConfig().getValue("camera.url");
-            String json = Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", timestamp + "").replace("%room_id%", room.getId() + "").replace("%url%", base + URL);
-            this.client.getHabbo().getHabboInfo().setPhotoURL(base + URL);
-            this.client.getHabbo().getHabboInfo().setPhotoTimestamp(timestamp);
-            this.client.getHabbo().getHabboInfo().setPhotoRoomId(room.getId());
-            this.client.getHabbo().getHabboInfo().setPhotoJSON(json);
-            CameraPurchaseEvent lol = new CameraPurchaseEvent();
-            lol.lastRanTimestamps.put(this.client.getHabbo(), Emulator.getIntUnixTimestamp());
 
             try {
-                if(Emulator.getConfig().getInt("ftp.enabled") == 1) {
-                    byte[] imageBytes = new byte[image.readableBytes()];
-                    image.readBytes(imageBytes);
-                    FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL);
-                    FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL_small);
-                }
-                else {
-                    BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
-                    ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
-                    ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL_small));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException e) {
-                System.out.println("[Apollyon] You are using a Habbo.swf that has not been patched to work with Apollyon. Please read the read me on a guide to patching your swf, or download a prepatched one on our git at:");
-                System.out.println("[Apollyon] https://git.krews.org/morningstar/apollyon");
-            }
+                this.packet.readString();
+                this.packet.readString();
+                this.packet.readInt();
+                this.packet.readInt();
+                int timestamp = Emulator.getIntUnixTimestamp();
 
-            this.client.sendResponse(new CameraURLComposer(URL));
+                String URL = this.client.getHabbo().getHabboInfo().getId() + "_" + timestamp + ".png";
+                String URL_small = this.client.getHabbo().getHabboInfo().getId() + "_" + timestamp + "_small.png";
+                String base = Emulator.getConfig().getValue("camera.url");
+                String json = Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", timestamp + "").replace("%room_id%", room.getId() + "").replace("%url%", base + URL);
+                this.client.getHabbo().getHabboInfo().setPhotoURL(base + URL);
+                this.client.getHabbo().getHabboInfo().setPhotoTimestamp(timestamp);
+                this.client.getHabbo().getHabboInfo().setPhotoRoomId(room.getId());
+                this.client.getHabbo().getHabboInfo().setPhotoJSON(json);
+                CameraPurchaseEvent lol = new CameraPurchaseEvent();
+                lol.lastRanTimestamps.put(this.client.getHabbo(), Emulator.getIntUnixTimestamp());
+
+                try {
+                    if(Emulator.getConfig().getInt("ftp.enabled") == 1) {
+                        byte[] imageBytes = new byte[image.readableBytes()];
+                        image.readBytes(imageBytes);
+                        FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL);
+                        FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL_small);
+                    }
+                    else {
+                        BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
+                        ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
+                        ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL_small));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    LOGGER.error("[Apollyon] You are using a Habbo.swf that has not been patched to work with Apollyon. Please read the read me on a guide to patching your swf, or download a prepatched one on our git at:");
+                    LOGGER.error("[Apollyon] https://git.krews.org/morningstar/apollyon");
+                }
+
+                this.client.sendResponse(new CameraURLComposer(URL));
+            } finally {
+                image.release();
+            }
         }
     }
