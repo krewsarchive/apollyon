@@ -36,6 +36,7 @@ public class CameraRoomPictureEvent extends MessageHandler {
         final int count = this.packet.readInt();
 
         ByteBuf image = this.packet.getBuffer().readBytes(count);
+        ByteBuf imageCopy = image.copy();
 
         if (image == null)
             return;
@@ -67,7 +68,7 @@ public class CameraRoomPictureEvent extends MessageHandler {
                         FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL);
                         FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL_small);
                     } else {
-                        BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
+                        BufferedImage theImage = ImageIO.read(new ByteBufInputStream(imageCopy));
                         ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
                         ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL_small));
                     }
