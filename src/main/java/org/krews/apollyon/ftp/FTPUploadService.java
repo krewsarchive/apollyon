@@ -1,6 +1,7 @@
 package org.krews.apollyon.ftp;
 
 import com.eu.habbo.Emulator;
+import org.krews.apollyon.utils.PngSignatureChecker;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,10 +13,8 @@ import java.util.Arrays;
 public class FTPUploadService {
     private static final String ftpUrl = "ftp://%s:%s@%s/%s;type=i";
 
-    public static void uploadImage(byte[] image, String uploadPath) throws IOException{
-        byte[] pngSignature = new byte[] { -119, 80, 78, 71, 13, 10, 26, 10 };
-
-        if (Arrays.equals(Arrays.copyOfRange(image, 0, 8), pngSignature)) {
+    public static void uploadImage(byte[] image, String uploadPath) throws IOException {
+        if (PngSignatureChecker.isPngFile(image)) {
             String host = Emulator.getConfig().getValue("ftp.host");
             String user = Emulator.getConfig().getValue("ftp.user");
             String pass = Emulator.getConfig().getValue("ftp.password");

@@ -1,21 +1,19 @@
 package org.krews.apollyon.incoming;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.catalog.CatalogManager;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
-import javafx.scene.Camera;
 import org.krews.apollyon.ftp.FTPUploadService;
+import org.krews.apollyon.utils.PngSignatureChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.lang.IllegalArgumentException;
@@ -26,23 +24,27 @@ public class CameraRoomPictureEvent extends MessageHandler {
     @Override
     public void handle() {
         if (!this.client.getHabbo().hasPermission("acc_camera")) {
-                this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.permission")));
-                return;
-            }
+            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.permission")));
+            return;
+        }
 
-            Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
 
-            if (room == null)
-                return;
+        if (room == null)
+            return;
 
-            final int count = this.packet.readInt();
+        final int count = this.packet.readInt();
 
-            ByteBuf image = this.packet.getBuffer().readBytes(count);
+        ByteBuf image = this.packet.getBuffer().readBytes(count);
 
-            if (image == null)
-                return;
+        if (image == null)
+            return;
 
-            try {
+        try {
+            byte[] imageBytes = new byte[image.readableBytes()];
+            image.readBytes(imageBytes);
+
+            if (PngSignatureChecker.isPngFile(imageBytes)) {
                 this.packet.readString();
                 this.packet.readString();
                 this.packet.readInt();
@@ -61,13 +63,10 @@ public class CameraRoomPictureEvent extends MessageHandler {
                 lol.lastRanTimestamps.put(this.client.getHabbo(), Emulator.getIntUnixTimestamp());
 
                 try {
-                    if(Emulator.getConfig().getInt("ftp.enabled") == 1) {
-                        byte[] imageBytes = new byte[image.readableBytes()];
-                        image.readBytes(imageBytes);
+                    if (Emulator.getConfig().getInt("ftp.enabled") == 1) {
                         FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL);
                         FTPUploadService.uploadImage(imageBytes, Emulator.getConfig().getValue("imager.location.output.camera") + URL_small);
-                    }
-                    else {
+                    } else {
                         BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
                         ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
                         ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL_small));
@@ -80,8 +79,9 @@ public class CameraRoomPictureEvent extends MessageHandler {
                 }
 
                 this.client.sendResponse(new CameraURLComposer(URL));
-            } finally {
-                image.release();
             }
+        } finally {
+            image.release();
         }
     }
+}
