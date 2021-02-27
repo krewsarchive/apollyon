@@ -7,6 +7,7 @@ import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.util.ReferenceCountUtil;
 import org.krews.apollyon.ftp.FTPUploadService;
 import org.krews.apollyon.utils.PngSignatureChecker;
 import org.slf4j.Logger;
@@ -82,7 +83,8 @@ public class CameraRoomPictureEvent extends MessageHandler {
                 this.client.sendResponse(new CameraURLComposer(URL));
             }
         } finally {
-            image.release();
+            ReferenceCountUtil.release(image);
+            ReferenceCountUtil.release(imageCopy);
         }
     }
 }
