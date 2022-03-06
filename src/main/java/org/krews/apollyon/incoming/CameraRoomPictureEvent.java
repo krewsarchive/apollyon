@@ -54,8 +54,10 @@ public class CameraRoomPictureEvent extends MessageHandler {
 
                 String URL = this.client.getHabbo().getHabboInfo().getId() + "_" + timestamp + ".png";
                 String URL_small = this.client.getHabbo().getHabboInfo().getId() + "_" + timestamp + "_small.png";
+                String UserID = this.client.getHabbo().getHabboInfo().getId() + "";
+                String UserNAME = this.client.getHabbo().getHabboInfo().getUsername();
                 String base = Emulator.getConfig().getValue("camera.url");
-                String json = Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", timestamp + "").replace("%room_id%", room.getId() + "").replace("%url%", base + URL);
+                String json = Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", timestamp + "000").replace("%room_id%", room.getId() + "").replace("%url%", base + URL).replace("%username%", UserNAME).replace("%userid%", UserID);
                 this.client.getHabbo().getHabboInfo().setPhotoURL(base + URL);
                 this.client.getHabbo().getHabboInfo().setPhotoTimestamp(timestamp);
                 this.client.getHabbo().getHabboInfo().setPhotoRoomId(room.getId());
