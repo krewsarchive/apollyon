@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 
 public class CameraPurchaseEvent extends MessageHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(CameraPurchaseEvent.class);
-    public static int CAMERA_PURCHASE_CREDITS = 5;
-    public static int CAMERA_PURCHASE_POINTS = 5;
-    public static int CAMERA_PURCHASE_POINTS_TYPE = 0;
+    public static int CAMERA_PURCHASE_CREDITS = Emulator.getConfig().getInt("camera.price.credits");
+    public static int CAMERA_PURCHASE_POINTS = Emulator.getConfig().getInt("camera.price.points");
+    public static int CAMERA_PURCHASE_POINTS_TYPE = Emulator.getConfig().getInt("camera.price.points.type");
     public THashMap<Habbo, Integer> lastRanTimestamps = new THashMap<Habbo, Integer>();
     public int getRatelimit() {
         return Emulator.getConfig().getInt("apollyon.cooldown.amount");
