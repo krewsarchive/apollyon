@@ -7,6 +7,7 @@ import com.eu.habbo.messages.outgoing.camera.CameraRoomThumbnailSavedComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.util.ReferenceCountUtil;
 import org.krews.apollyon.ftp.FTPUploadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,7 @@ public class CameraRoomThumbnailEvent extends MessageHandler {
 
             this.client.sendResponse(new CameraRoomThumbnailSavedComposer());
         } finally {
-            image.release();
+            ReferenceCountUtil.release(image);
         }
     }
 }
