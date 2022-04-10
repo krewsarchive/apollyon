@@ -1,19 +1,20 @@
 # Apollyon #
 
 ## What is Apollyon? ##
-Apollyon is the official Camera Project for Arcturus Morningstar, it is also compatible with Arcturus Emulator by TheGeneral, if you wish to use it with the official arcturus software.
+Apollyon is a Camera Plugin for Arcturus Morningstar
 
-## Why should I use this instead of the official camera for Arcturus by TheGeneral? ##
-Apollyon uses a PNG Image, instead of JSON data to create the image, meaning all customs and new furniture and clothing show up without needing TheGeneral to update his camera server.
+Apollyon uses a PNG Image, instead of JSON data to create the image, meaning while all of the Habbo Client is rendered in an image - it does not use the JSON Method implemented by the official Habbo Client.
+
+As such, if a JSON Plugin is released - it will be recommended that you use that instead.
 
 ## License ##
 Apollyon is released under the [DO WHAT THE F*CK YOU WANT TO PUBLIC LICENCE](https://git.krews.org/morningstar/apollyon/blob/master/LICENSE).
 
 ## Versions ##
 ![image](https://img.shields.io/badge/VERSION-1-success.svg?style=for-the-badge&logo=appveyor)
-![image](https://img.shields.io/badge/STATUS-PREVIEW-blue.svg?style=for-the-badge&logo=appveyor)
+![image](https://img.shields.io/badge/STATUS-FINAL-blue.svg?style=for-the-badge&logo=appveyor)
 
-Compiled Download: [Preview 1](https://git.krews.org/morningstar/Apollyon/releases)
+Compiled Download: [1.0 FINAL](https://git.krews.org/morningstar/Apollyon/releases)
 
 Pre-Patched SWF Download: [Download Link](https://git.krews.org/morningstar/apollyon/uploads/dc669a26613bf2356e48eb653734ab29/patched-habbo.swf)
 

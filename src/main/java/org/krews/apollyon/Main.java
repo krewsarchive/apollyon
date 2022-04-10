@@ -86,7 +86,7 @@ public class Main extends HabboPlugin implements EventListener {
         packetManager.registerHandler(Incoming.CameraRoomThumbnailEvent, CameraRoomThumbnailEvent.class);
 
         // Send the message to the Emulator that PNGCamera has started.
-        LOGGER.info("Official Plugin - Rawr. Apollyon Preview 2 has officially loaded!");
+        LOGGER.info("Official Plugin - Apollyon 1.0 has loaded!");
 
     }
 
